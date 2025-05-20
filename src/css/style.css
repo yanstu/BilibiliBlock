@@ -1,0 +1,170 @@
+/**
+ * BilibiliBlock 样式文件
+ * 定义拉黑按钮和提示消息的样式
+ */
+
+/* 拉黑按钮样式 */
+.bilibili-block-button {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: #fb7299;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  text-decoration: none;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.bilibili-block-button:hover {
+  background-color: #fc8bab;
+}
+
+.bilibili-block-button:active {
+  background-color: #e45c88;
+}
+
+/* 加载中状态 */
+.bilibili-block-button.loading {
+  background-color: #999;
+  cursor: wait;
+}
+
+/* 已拉黑状态 */
+.bilibili-block-button.blocked {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.bilibili-block-button.blocked:hover {
+  background-color: #666;
+}
+
+/* 提示消息样式 */
+.bilibili-block-toast {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  max-width: 80%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 999999;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.bilibili-block-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* 成功提示 */
+.bilibili-block-toast-success {
+  background-color: rgba(46, 160, 67, 0.85);
+}
+
+/* 错误提示 */
+.bilibili-block-toast-error {
+  background-color: rgba(210, 44, 88, 0.85);
+}
+
+/* 信息提示 */
+.bilibili-block-toast-info {
+  background-color: rgba(24, 144, 255, 0.85);
+}
+
+/* 警告提示 */
+.bilibili-block-toast-warn {
+  background-color: rgba(250, 173, 20, 0.85);
+}
+
+/* 淡出效果 */
+.feed-card.blocked,
+.bili-video-card.blocked {
+  opacity: 0.5;
+  transition: opacity 0.5s ease;
+}
+
+/* 对不同的布局进行适配 */
+@media screen and (max-width: 1200px) {
+  .bili-video-card__info--bottom {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .bilibili-block-button {
+    margin-left: auto;
+  }
+}
+
+/* 视频详情页推荐视频适配 */
+.video-page-card-small .bilibili-block-button {
+  display: inline-block;
+  margin-top: 0;
+  margin-left: 5px;
+  font-size: 10px;
+  text-align: center;
+  padding: 0 4px;
+  width: auto;
+  min-width: unset;
+  vertical-align: middle;
+  color: #fff !important;
+}
+
+.video-page-card-small .upname .bilibili-block-button {
+  font-size: 11px;
+  padding: 0 4px;
+  width: auto;
+  min-width: unset;
+}
+
+/* UP主主页视频适配 */
+.bili-video-card__wrap .bilibili-block-button {
+  margin-left: 8px;
+}
+
+.bili-video-card__details .bilibili-block-button {
+  margin-top: 4px;
+  display: inline-block;
+}
+
+/* 美化扩展样式1适配 */
+[data-v-89bbbbc2] .bilibili-block-button {
+  font-size: 11px;
+  padding: 1px 5px;
+  margin-left: 6px;
+}
+
+[data-v-89bbbbc2] .channel-name + .bilibili-block-button {
+  vertical-align: middle;
+}
+
+/* 美化扩展样式2适配 */
+.feed-card .bili-video-card.is-rcmd .bilibili-block-button {
+  margin-left: 8px;
+}
+
+.feed-card .bili-video-card.is-rcmd .bili-video-card__info--bottom .bilibili-block-button {
+  font-size: 11px;
+  padding: 1px 4px;
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .bilibili-block-toast {
+    background-color: rgba(30, 30, 30, 0.9);
+  }
+} 

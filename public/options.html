@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BilibiliBlock 选项</title>
+  <style>
+    /* 全局样式 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    
+    /* 容器 */
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    
+    /* 头部 */
+    .header {
+      background-color: #fb7299;
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .header-logo {
+      width: 32px;
+      height: 32px;
+      margin-right: 12px;
+    }
+    
+    .header-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    /* 内容区域 */
+    .content {
+      padding: 20px;
+    }
+    
+    /* 设置项 */
+    .section {
+      margin-bottom: 24px;
+    }
+    
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #eee;
+      color: #333;
+    }
+    
+    .option-group {
+      margin-bottom: 16px;
+    }
+    
+    .option-label {
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .option-label input[type="checkbox"] {
+      margin-right: 8px;
+      width: 16px;
+      height: 16px;
+    }
+    
+    .option-description {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #666;
+      margin-left: 24px;
+    }
+    
+    /* 选择框 */
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    
+    /* 表单控件 */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    /* 按钮 */
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+    
+    .button {
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-weight: 500;
+    }
+    
+    .button-primary {
+      background-color: #fb7299;
+      color: white;
+    }
+    
+    .button-primary:hover {
+      background-color: #fc8bab;
+    }
+    
+    .button-secondary {
+      background-color: #f5f5f5;
+      color: #333;
+      margin-right: 10px;
+    }
+    
+    .button-secondary:hover {
+      background-color: #e5e5e5;
+    }
+    
+    /* 导出按钮 */
+    .export-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+      background-color: #f5f5f5;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .export-btn:hover {
+      background-color: #e5e5e5;
+    }
+    
+    /* 高级设置 */
+    .advanced-settings {
+      background-color: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      padding: 16px;
+    }
+    
+    /* 成功提示 */
+    .save-success {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #52c41a;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .save-success.show {
+      opacity: 1;
+    }
+    
+    /* 暗色模式 */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #222;
+        color: #eee;
+      }
+      
+      .container {
+        background-color: #333;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+      
+      .section-title {
+        border-bottom-color: #444;
+        color: #eee;
+      }
+      
+      .option-description {
+        color: #aaa;
+      }
+      
+      select, .form-control {
+        background-color: #444;
+        border-color: #555;
+        color: #eee;
+      }
+      
+      .button-secondary {
+        background-color: #444;
+        color: #eee;
+      }
+      
+      .button-secondary:hover {
+        background-color: #555;
+      }
+      
+      .export-btn {
+        background-color: #444;
+        color: #eee;
+      }
+      
+      .export-btn:hover {
+        background-color: #555;
+      }
+      
+      .advanced-settings {
+        background-color: #2a2a2a;
+        border-color: #444;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <img src="../src/images/icon48.png" alt="BilibiliBlock" class="header-logo">
+      <h1 class="header-title">BilibiliBlock 选项设置</h1>
+    </header>
+    
+    <div class="content">
+      <!-- 基本设置 -->
+      <div class="section">
+        <h2 class="section-title">基本设置</h2>
+        
+        <div class="option-group">
+          <label class="option-label">
+            <input type="checkbox" id="enableExt" checked>
+            启用扩展
+          </label>
+          <p class="option-description">开启或关闭扩展的所有功能</p>
+        </div>
+        
+        <div class="option-group">
+          <label class="option-label">
+            <input type="checkbox" id="autoHideBlocked" checked>
+            拉黑后自动淡化视频卡片
+          </label>
+          <p class="option-description">当成功拉黑UP主后，自动将该视频卡片变透明</p>
+        </div>
+      </div>
+      
+      <!-- 显示设置 -->
+      <div class="section">
+        <h2 class="section-title">显示设置</h2>
+        
+        <div class="form-group">
+          <label class="form-label">拉黑按钮位置</label>
+          <select id="buttonPosition" class="form-control">
+            <option value="right">右侧（靠近日期）</option>
+            <option value="far-right">最右侧</option>
+            <option value="left">左侧（靠近UP主名称）</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">拉黑按钮文本</label>
+          <input type="text" id="buttonText" class="form-control" value="拉黑" placeholder="例如：拉黑、屏蔽等">
+        </div>
+      </div>
+      
+      <!-- 黑名单管理 -->
+      <div class="section">
+        <h2 class="section-title">黑名单管理</h2>
+        
+        <button id="exportBtn" class="export-btn">导出黑名单</button>
+        
+        <div class="option-group" style="margin-top: 16px;">
+          <label class="option-label">
+            <input type="checkbox" id="confirmBlock">
+            拉黑前确认
+          </label>
+          <p class="option-description">点击拉黑按钮后，先弹出确认对话框</p>
+        </div>
+      </div>
+      
+      <!-- 高级设置 -->
+      <div class="section">
+        <h2 class="section-title">高级设置</h2>
+        
+        <div class="advanced-settings">
+          <div class="option-group">
+            <label class="option-label">
+              <input type="checkbox" id="debugMode">
+              开启调试模式
+            </label>
+            <p class="option-description">在控制台输出更多调试信息</p>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">扫描间隔（毫秒）</label>
+            <input type="number" id="scanInterval" class="form-control" value="5000" min="1000" max="10000">
+            <p class="option-description">页面动态内容的扫描间隔，过小可能影响性能</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 按钮 -->
+      <div class="button-group">
+        <button id="resetBtn" class="button button-secondary">恢复默认设置</button>
+        <button id="saveBtn" class="button button-primary">保存设置</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 保存成功提示 -->
+  <div id="saveSuccess" class="save-success">设置已保存</div>
+  
+  <script src="../src/js/options.js"></script>
+</body>
+</html> 

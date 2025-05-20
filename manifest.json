@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "BilibiliBlock",
+  "version": "1.0.0",
+  "description": "一键拉黑B站UP主，在首页、视频页、个人空间、搜索结果等页面，点击按钮即可拉黑UP主。",
+  "icons": {
+    "48": "src/images/icon48.png",
+    "128": "src/images/icon128.png"
+  },
+  "action": {
+    "default_popup": "public/popup.html",
+    "default_icon": {
+      "48": "src/images/icon48.png",
+      "128": "src/images/icon128.png"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*.bilibili.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.bilibili.com/*"],
+      "js": [
+        "src/js/utils.js",
+        "src/js/api.js",
+        "src/js/content.js"
+      ],
+      "css": ["src/css/style.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "src/js/background.js"
+  }
+} 
