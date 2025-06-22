@@ -19,6 +19,10 @@
   text-decoration: none;
   vertical-align: middle;
   text-align: center;
+  white-space: nowrap;
+  overflow: visible;
+  min-width: 40px;
+  width: auto !important;
 }
 
 .bilibili-block-button:hover {

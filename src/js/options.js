@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // 获取DOM元素
   const enableExtCheckbox = document.getElementById('enableExt');
   const autoHideBlockedCheckbox = document.getElementById('autoHideBlocked');
-  const buttonPositionSelect = document.getElementById('buttonPosition');
   const buttonTextInput = document.getElementById('buttonText');
   const confirmBlockCheckbox = document.getElementById('confirmBlock');
   const debugModeCheckbox = document.getElementById('debugMode');
@@ -19,18 +18,71 @@ document.addEventListener('DOMContentLoaded', function() {
   const exportBtn = document.getElementById('exportBtn');
   const saveSuccess = document.getElementById('saveSuccess');
   
+  // 检查必需的元素是否存在
+  const requiredElements = {
+    'enableExt': enableExtCheckbox,
+    'autoHideBlocked': autoHideBlockedCheckbox,
+    'buttonText': buttonTextInput,
+    'confirmBlock': confirmBlockCheckbox,
+    'debugMode': debugModeCheckbox,
+    'scanInterval': scanIntervalInput,
+    'saveBtn': saveBtn,
+    'resetBtn': resetBtn,
+    'exportBtn': exportBtn
+  };
+  
+  // 检查是否有缺失的元素
+  const missingElements = Object.entries(requiredElements)
+    .filter(([id, element]) => !element)
+    .map(([id]) => id);
+  
+  if (missingElements.length > 0) {
+    console.error('无法找到以下DOM元素:', missingElements.join(', '));
+    // 如果有缺失元素，显示错误提示
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = `页面加载错误：无法找到必要的DOM元素。请刷新页面或联系开发者。`;
+    document.body.insertBefore(errorDiv, document.body.firstChild);
+    return; // 中止初始化
+  }
+  
   /**
    * 默认设置
    */
   const defaultSettings = {
     'bilibiliBlock.enabled': true,
     'bilibiliBlock.autoHideBlocked': true,
-    'bilibiliBlock.buttonPosition': 'right',
     'bilibiliBlock.buttonText': '拉黑',
     'bilibiliBlock.confirmBlock': false,
     'bilibiliBlock.debugMode': false,
-    'bilibiliBlock.scanInterval': 5000
+    'bilibiliBlock.scanInterval': 4000
   };
+  
+  /**
+   * 安全地设置DOM元素的值
+   * @param {HTMLElement} element DOM元素
+   * @param {string} property 要设置的属性
+   * @param {any} value 属性值
+   */
+  function safeSetElementValue(element, property, value) {
+    if (element && property in element) {
+      element[property] = value;
+    }
+  }
+  
+  /**
+   * 安全地获取DOM元素的值
+   * @param {HTMLElement} element DOM元素
+   * @param {string} property 要获取的属性
+   * @param {any} defaultValue 默认值
+   * @returns {any} 属性值或默认值
+   */
+  function safeGetElementValue(element, property, defaultValue) {
+    if (element && property in element) {
+      return element[property];
+    }
+    return defaultValue;
+  }
   
   /**
    * 加载保存的设置
@@ -40,14 +92,13 @@ document.addEventListener('DOMContentLoaded', function() {
       // 如果设置项不存在，使用默认值
       const settings = { ...defaultSettings, ...items };
       
-      // 设置表单值
-      enableExtCheckbox.checked = settings['bilibiliBlock.enabled'];
-      autoHideBlockedCheckbox.checked = settings['bilibiliBlock.autoHideBlocked'];
-      buttonPositionSelect.value = settings['bilibiliBlock.buttonPosition'];
-      buttonTextInput.value = settings['bilibiliBlock.buttonText'];
-      confirmBlockCheckbox.checked = settings['bilibiliBlock.confirmBlock'];
-      debugModeCheckbox.checked = settings['bilibiliBlock.debugMode'];
-      scanIntervalInput.value = settings['bilibiliBlock.scanInterval'];
+      // 设置表单值，使用安全设置函数
+      safeSetElementValue(enableExtCheckbox, 'checked', settings['bilibiliBlock.enabled']);
+      safeSetElementValue(autoHideBlockedCheckbox, 'checked', settings['bilibiliBlock.autoHideBlocked']);
+      safeSetElementValue(buttonTextInput, 'value', settings['bilibiliBlock.buttonText']);
+      safeSetElementValue(confirmBlockCheckbox, 'checked', settings['bilibiliBlock.confirmBlock']);
+      safeSetElementValue(debugModeCheckbox, 'checked', settings['bilibiliBlock.debugMode']);
+      safeSetElementValue(scanIntervalInput, 'value', settings['bilibiliBlock.scanInterval']);
     });
   }
   
@@ -55,15 +106,14 @@ document.addEventListener('DOMContentLoaded', function() {
    * 保存设置
    */
   function saveSettings() {
-    // 获取表单值
+    // 获取表单值，使用安全获取函数
     const settings = {
-      'bilibiliBlock.enabled': enableExtCheckbox.checked,
-      'bilibiliBlock.autoHideBlocked': autoHideBlockedCheckbox.checked,
-      'bilibiliBlock.buttonPosition': buttonPositionSelect.value,
-      'bilibiliBlock.buttonText': buttonTextInput.value,
-      'bilibiliBlock.confirmBlock': confirmBlockCheckbox.checked,
-      'bilibiliBlock.debugMode': debugModeCheckbox.checked,
-      'bilibiliBlock.scanInterval': parseInt(scanIntervalInput.value, 10)
+      'bilibiliBlock.enabled': safeGetElementValue(enableExtCheckbox, 'checked', defaultSettings['bilibiliBlock.enabled']),
+      'bilibiliBlock.autoHideBlocked': safeGetElementValue(autoHideBlockedCheckbox, 'checked', defaultSettings['bilibiliBlock.autoHideBlocked']),
+      'bilibiliBlock.buttonText': safeGetElementValue(buttonTextInput, 'value', defaultSettings['bilibiliBlock.buttonText']),
+      'bilibiliBlock.confirmBlock': safeGetElementValue(confirmBlockCheckbox, 'checked', defaultSettings['bilibiliBlock.confirmBlock']),
+      'bilibiliBlock.debugMode': safeGetElementValue(debugModeCheckbox, 'checked', defaultSettings['bilibiliBlock.debugMode']),
+      'bilibiliBlock.scanInterval': parseInt(safeGetElementValue(scanIntervalInput, 'value', defaultSettings['bilibiliBlock.scanInterval']), 10)
     };
     
     // 保存到存储中
@@ -126,12 +176,17 @@ document.addEventListener('DOMContentLoaded', function() {
    * @param {string} message 提示消息
    */
   function showSaveSuccess(message = '设置已保存') {
-    saveSuccess.textContent = message;
-    saveSuccess.classList.add('show');
-    
-    setTimeout(() => {
-      saveSuccess.classList.remove('show');
-    }, 2000);
+    if (saveSuccess) {
+      saveSuccess.textContent = message;
+      saveSuccess.classList.add('show');
+      
+      setTimeout(() => {
+        saveSuccess.classList.remove('show');
+      }, 2000);
+    } else {
+      // 如果找不到提示元素，使用alert
+      alert(message);
+    }
   }
   
   /**
@@ -147,9 +202,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // 绑定事件监听
-  saveBtn.addEventListener('click', saveSettings);
-  resetBtn.addEventListener('click', resetSettings);
-  exportBtn.addEventListener('click', exportBlockList);
+  if (saveBtn) saveBtn.addEventListener('click', saveSettings);
+  if (resetBtn) resetBtn.addEventListener('click', resetSettings);
+  if (exportBtn) exportBtn.addEventListener('click', exportBlockList);
   
   // 加载设置
   loadSettings();

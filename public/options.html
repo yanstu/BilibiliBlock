@@ -288,15 +288,6 @@
         <h2 class="section-title">显示设置</h2>
         
         <div class="form-group">
-          <label class="form-label">拉黑按钮位置</label>
-          <select id="buttonPosition" class="form-control">
-            <option value="right">右侧（靠近日期）</option>
-            <option value="far-right">最右侧</option>
-            <option value="left">左侧（靠近UP主名称）</option>
-          </select>
-        </div>
-        
-        <div class="form-group">
           <label class="form-label">拉黑按钮文本</label>
           <input type="text" id="buttonText" class="form-control" value="拉黑" placeholder="例如：拉黑、屏蔽等">
         </div>
@@ -317,25 +308,10 @@
         </div>
       </div>
       
-      <!-- 高级设置 -->
-      <div class="section">
-        <h2 class="section-title">高级设置</h2>
-        
-        <div class="advanced-settings">
-          <div class="option-group">
-            <label class="option-label">
-              <input type="checkbox" id="debugMode">
-              开启调试模式
-            </label>
-            <p class="option-description">在控制台输出更多调试信息</p>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">扫描间隔（毫秒）</label>
-            <input type="number" id="scanInterval" class="form-control" value="5000" min="1000" max="10000">
-            <p class="option-description">页面动态内容的扫描间隔，过小可能影响性能</p>
-          </div>
-        </div>
+      <!-- 隐藏设置（不显示给用户，但保留功能） -->
+      <div style="display: none;">
+        <input type="checkbox" id="debugMode">
+        <input type="number" id="scanInterval" value="4000">
       </div>
       
       <!-- 按钮 -->
